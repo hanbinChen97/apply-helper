@@ -1,9 +1,0 @@
-llm:
-  provider: "openai" # default provider (can be 'openai', 'azure', 'gemini')
-  models:
-    openai: "gpt-4o"
-    azure: "your-azure-deployment-name" # Replace with actual deployment name
-    gemini: "gemini-1.5-pro"
-  # Retry settings can also go here
-  retries: 3
-  timeout: 120 # seconds
