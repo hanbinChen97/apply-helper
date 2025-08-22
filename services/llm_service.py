@@ -1,8 +1,8 @@
 import json
 from typing import Tuple, Dict, Any
 
-from app.llm.litellm_client import call_llm
-from app.llm.prompt_templates import get_template
+from llm.litellm_client import call_llm
+from llm.prompt_templates import get_template
 
 def _parse_json_response(response: str) -> Dict[str, Any]:
     """

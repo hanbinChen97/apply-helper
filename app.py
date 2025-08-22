@@ -1,7 +1,7 @@
 import streamlit as st
 import os
 import datetime
-from app.services import analyse_service, generation_service, pdf_service
+from services import analyse_service, generation_service, pdf_service
 
 def initialize_session_state():
     """Initializes session state variables."""

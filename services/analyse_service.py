@@ -1,5 +1,5 @@
 from typing import Dict, Any
-from app.services import llm_service
+from . import llm_service
 
 def analyse(jd: str, user_info: str) -> Dict[str, Any]:
     """

@@ -15,7 +15,3 @@ dependencies = [
     "tenacity",
     "markdown-it-py"
 ]
-
-[tool.uv.scripts]
-start = "streamlit run app/ui.py"
-test = "pytest -q"

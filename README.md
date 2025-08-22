@@ -39,36 +39,34 @@ pip install streamlit litellm pydantic pyyaml weasyprint python-dotenv pytest te
 ### 3. Run the Application
 Once dependencies are installed, run the Streamlit app:
 
-**Using uv:**
-The `start` script in `pyproject.toml` runs the app for you.
+**Start the Application:**
 ```bash
-uv run start
-```
-
-**Using streamlit directly:**
-```bash
-streamlit run app/ui.py
+streamlit run app.py
 ```
 You can now view the application in your browser, typically at `http://localhost:8501`.
+
+**Run Tests:**
+```bash
+pytest -q
+```
 
 ## Project Structure
 ```
 apply-helper/
 ├── pyproject.toml           # Project dependencies and scripts
 ├── README.md                # This file
+├── app.py                   # Streamlit frontend main entry point
 ├── docs/
 │   ├── prd.md               # Product Requirements Document
 │   └── spec.md              # Technical Specifications
-├── app/
-│   ├── ui.py                # Streamlit frontend main entry point
-│   ├── services/
-│   │   ├── analyse_service.py
-│   │   ├── generation_service.py
-│   │   ├── pdf_service.py
-│   │   └── llm_service.py
-│   └── llm/
-│       ├── litellm_client.py
-│       └── prompt_templates.py
+├── services/
+│   ├── analyse_service.py
+│   ├── generation_service.py
+│   ├── pdf_service.py
+│   └── llm_service.py
+├── llm/
+│   ├── litellm_client.py
+│   └── prompt_templates.py
 ├── exports/                 # Directory for exported PDF files
 └── tests/                   # Unit tests
 ```

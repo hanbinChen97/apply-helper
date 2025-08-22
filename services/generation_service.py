@@ -1,5 +1,5 @@
 from typing import Tuple, Dict, Any
-from app.services import llm_service
+from . import llm_service
 
 def generate_both(summary: Dict[str, Any], user_info: str) -> Tuple[str, str]:
     """

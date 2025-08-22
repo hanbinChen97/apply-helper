@@ -6,26 +6,25 @@
 apply-helper/
 ├── pyproject.toml           # 项目依赖与配置
 ├── README.md                # 项目说明文档
+├── app.py                   # Streamlit 前端主入口
 ├── docs/
 │   ├── prd.md               # 产品需求文档
 │   └── spec.md              # 技术规格说明（本文件）
-├── app/
-│   ├── ui.py                # Streamlit 前端主入口
-│   └── services/
-│       ├── analyse_service.py      # JD/用户信息分析与总结
-│       ├── generation_service.py   # 简历与求职信生成
-│       ├── pdf_service.py          # PDF 导出功能
-│       └── llm_service.py          # LLM/LiteLLM 统一封装与调用
-│   └── llm/
-│       ├── litellm_client.py       # LiteLLM API 封装
-│       └── prompt_templates.py     # LLM Prompt 模板管理
+├── services/
+│   ├── analyse_service.py   # JD/用户信息分析与总结
+│   ├── generation_service.py # 简历与求职信生成
+│   ├── pdf_service.py       # PDF 导出功能
+│   └── llm_service.py       # LLM/LiteLLM 统一封装与调用
+├── llm/
+│   ├── litellm_client.py    # LiteLLM API 封装
+│   └── prompt_templates.py  # LLM Prompt 模板管理
 ├── exports/                 # 导出 PDF 文件目录
 └── tests/                   # 单元测试
 ```
 
 ## 2. 主要 Python 文件与函数
 
-### 2.1 `app/ui.py` — Streamlit 前端主入口
+### 2.1 `app.py` — Streamlit 前端主入口
 
 - 页面布局：左侧输入与控制，右侧结果与预览
 - 主要函数：
@@ -40,16 +39,16 @@ apply-helper/
 
 ### 2.2 LLM 相关代码
 
-- `app/services/llm_service.py`：统一封装 LLM 调用逻辑，负责模型选择、异常处理、日志记录。
-- `app/llm/litellm_client.py`：LiteLLM API 封装，负责与 OpenAI/Azure/Gemini 等模型的底层交互。
-- `app/llm/prompt_templates.py`：管理分析、生成、优化等各类 Prompt 模板。
+- `services/llm_service.py`：统一封装 LLM 调用逻辑，负责模型选择、异常处理、日志记录。
+- `llm/litellm_client.py`：LiteLLM API 封装，负责与 OpenAI/Azure/Gemini 等模型的底层交互。
+- `llm/prompt_templates.py`：管理分析、生成、优化等各类 Prompt 模板。
 
 #### 主要接口伪代码示例
 
 ```python
 # llm_service.py
-from app.llm.litellm_client import call_llm
-from app.llm.prompt_templates import get_template
+from llm.litellm_client import call_llm
+from llm.prompt_templates import get_template
 
 def analyse_llm(jd: str, user: str) -> dict:
 	prompt = get_template("analyse").format(jd=jd, user=user)
@@ -71,7 +70,7 @@ def call_llm(prompt: str) -> str:
 
 ### 2.3 业务服务
 
-- `app/services/analyse_service.py`
+- `services/analyse_service.py`
 	```python
 	def analyse(jd: str, user: str) -> dict:
 			return llm_service.analyse_llm(jd, user)
@@ -80,7 +79,7 @@ def call_llm(prompt: str) -> str:
 			return llm_service.refine_llm(summary, feedback)
 	```
 
-- `app/services/generation_service.py`
+- `services/generation_service.py`
 	```python
 	def generate_both(summary: dict, user: str) -> Tuple[str, str]:
 			resume_md = llm_service.generate_resume(summary, user)
@@ -88,7 +87,7 @@ def call_llm(prompt: str) -> str:
 			return resume_md, cover_txt
 	```
 
-- `app/services/pdf_service.py`
+- `services/pdf_service.py`
 	```python
 	def md_to_pdf(md: str, path: str) -> None:
 			# 使用 weasyprint 或 pdfkit 实现
@@ -145,7 +144,7 @@ def call_llm(prompt: str) -> str:
 	```sh
 	uv run start
 	# 或
-	uv run streamlit run app/ui.py
+	uv run streamlit run app.py
 	```
 
 ### 4.2 LLM 接入（LiteLLM 指南）
