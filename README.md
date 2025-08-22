@@ -9,28 +9,66 @@ AI-powered app that analyzes a job description and your background, then generat
 - Export PDFs and a combined ZIP
 
 ## Quick Start
-1) Prereqs: Python 3.9+, and either `uv` (recommended) or `pip`.
-2) Configure secrets: copy `.env.example` → `.env` and set API keys (`OPENAI_API_KEY`, or Azure/Gemini keys).
-3) Install deps:
-   - Using uv: `uv sync`
-4) Run the app:
-   - `uv run start` (or `uv run streamlit run app.py`)
-   - Open the URL printed by Streamlit (typically http://localhost:8501).
+
+### 1. Configure Secrets
+First, copy the example environment file and add your LLM API key.
+
+```bash
+cp .env.example .env
+```
+Now, edit the `.env` file to add your `OPENAI_API_KEY` or keys for other supported providers.
+
+### 2. Install Dependencies
+You will need Python 3.9+ and can use `uv` (recommended) or `pip`.
+
+**Using uv:**
+```bash
+# Install uv if you don't have it
+pip install uv
+
+# Install dependencies from pyproject.toml
+uv sync
+```
+
+**Using pip:**
+```bash
+pip install streamlit litellm pydantic pyyaml weasyprint python-dotenv pytest tenacity markdown-it-py
+```
+*Note: `weasyprint` may require installing system-level dependencies like Pango, Cairo, and GDK-PixBuf. Please see the [WeasyPrint documentation](https://doc.weasyprint.org/stable/first_steps.html#installation) for platform-specific instructions.*
+
+### 3. Run the Application
+Once dependencies are installed, run the Streamlit app:
+
+**Using uv:**
+The `start` script in `pyproject.toml` runs the app for you.
+```bash
+uv run start
+```
+
+**Using streamlit directly:**
+```bash
+streamlit run app/ui.py
+```
+You can now view the application in your browser, typically at `http://localhost:8501`.
 
 ## Project Structure
 ```
 apply-helper/
-├── pyproject.toml           # 项目依赖与配置
-├── README.md                # 项目说明文档
+├── pyproject.toml           # Project dependencies and scripts
+├── README.md                # This file
 ├── docs/
-│   ├── prd.md               # 产品需求文档
-│   └── spec.md              # 技术规格说明（本文件）
+│   ├── prd.md               # Product Requirements Document
+│   └── spec.md              # Technical Specifications
 ├── app/
-│   ├── ui.py                # Streamlit 前端主入口
-│   └── services/
-│       ├── analyse_service.py      # JD/用户信息分析与总结
-│       ├── generation_service.py   # 简历与求职信生成
-│       └── pdf_service.py          # PDF 导出功能
-├── exports/                 # 导出 PDF 文件目录
-└── tests/                   # 单元测试
+│   ├── ui.py                # Streamlit frontend main entry point
+│   ├── services/
+│   │   ├── analyse_service.py
+│   │   ├── generation_service.py
+│   │   ├── pdf_service.py
+│   │   └── llm_service.py
+│   └── llm/
+│       ├── litellm_client.py
+│       └── prompt_templates.py
+├── exports/                 # Directory for exported PDF files
+└── tests/                   # Unit tests
 ```
