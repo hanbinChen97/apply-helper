@@ -107,40 +107,44 @@ Backend: **Python + LiteLLM** for multi-provider LLM integration.
 
 ---
 
-## 4. Technical Design (High-Level)
 
-### 4.1 Frontend
+## 4. 技术实现概览
 
-* **Streamlit**
+### 4.1 项目结构
 
-  * 左栏：输入 & 控制
-  * 主区：输出 & 预览
+```
+apply-helper/
+├── pyproject.toml           # 项目依赖与配置
+├── README.md                # 项目说明文档
+├── docs/
+│   ├── prd.md               # 产品需求文档
+│   └── spec.md              # 技术规格说明
+├── app/
+│   ├── ui.py                # Streamlit 前端主入口
+│   └── services/
+│       ├── analyse_service.py      # JD/用户信息分析与总结
+│       ├── generation_service.py   # 简历与求职信生成
+│       ├── pdf_service.py          # PDF 导出功能
+│       └── llm_service.py          # LLM/LiteLLM 统一封装与调用
+│   └── llm/
+│       ├── litellm_client.py       # LiteLLM API 封装
+│       └── prompt_templates.py     # LLM Prompt 模板管理
+├── exports/                 # 导出 PDF 文件目录
+└── tests/                   # 单元测试
+```
 
-### 4.2 Backend Logic
+### 4.2 主要技术实现
 
-* **Analyse Loop**
-
-  ```
-  JD + User Info → LLM → Summary
-  Feedback + Summary → LLM → Updated Summary
-  ```
-* **Generation**
-
-  ```
-  JD + User Info + Final Summary → LLM → Resume + Cover Letter
-  ```
-* **Export**
-
-  ```
-  Resume(MD) + Cover(TXT) → PDF
-  ```
-
-### 4.3 Tech Stack
-
-* **Frontend**: Streamlit
-* **Backend**: Python
-* **LLM**: LiteLLM (OpenAI / Azure / Gemini)
-* **PDF Export**: WeasyPrint / pdfkit
+- **前端**：Streamlit 单页应用，左侧输入与控制，右侧结果与预览。
+- **后端服务**：
+  - `analyse_service.py`：负责 JD/用户信息分析与总结。
+  - `generation_service.py`：负责简历与求职信生成。
+  - `pdf_service.py`：负责 PDF 导出。
+  - `llm_service.py`：统一封装 LLM 调用，底层通过 `llm/litellm_client.py` 对接 LiteLLM。
+  - `llm/prompt_templates.py`：管理各类 Prompt 模板。
+- **依赖管理**：推荐使用 uv 管理 Python 依赖。
+- **LLM 接入**：LiteLLM 支持多云模型，密钥通过 .env 配置。
+- **扩展性**：各服务模块解耦，便于未来扩展多语言、社交信息抓取等。
 
 ---
 
